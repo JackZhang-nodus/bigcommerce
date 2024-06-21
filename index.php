@@ -22,7 +22,7 @@ echo 'load';
 	if (empty($data)) {
 		return 'Invalid signed_payload.';
 	}
-	return 'Hello ' . json_encode($data);
+	echo 'Hello ' . json_encode($data);
 	$redis = new Credis_Client('localhost');
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
 	$user = json_decode($redis->get($key), true);
