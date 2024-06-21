@@ -9,7 +9,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
+echo phpinfo();
 // Load from .env file
 $dotenv = new Dotenv\Dotenv(__DIR__);
 $dotenv->load();
