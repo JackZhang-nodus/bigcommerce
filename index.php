@@ -17,7 +17,7 @@ $app = new Application();
 $app['debug'] = true;
 
 $app->get('/load', function (Request $request) use ($app) {
-
+echo 'load';
 	$data = verifySignedRequest($request->get('signed_payload'));
 	if (empty($data)) {
 		return 'Invalid signed_payload.';
@@ -33,6 +33,7 @@ $app->get('/load', function (Request $request) use ($app) {
 });
 
 $app->get('/auth/callback', function (Request $request) use ($app) {
+echo 'auth';
 	//$redis = new Credis_Client('localhost');
 
 	$payload = array(
