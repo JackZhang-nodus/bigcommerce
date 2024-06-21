@@ -8,6 +8,6 @@
       {
           "src": "/(*.php)",
           "dest": "/api/index.php"
-      }
+      } 
   ]
 }
