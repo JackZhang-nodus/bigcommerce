@@ -34,7 +34,7 @@ echo 'load';
 });
 
 $app->get('/auth/callback', function (Request $request) use ($app) {
-echo 'auth';
+echo 'auth';print_r($request);
 	//$redis = new Credis_Client('localhost');
 
 	$payload = array(
