@@ -57,8 +57,8 @@ $app->get('/auth/callback', function (Request $request) use ($app) {
 		$key = getUserKey($storeHash, $data['user']['email']);
 
 		// Store the user data and auth data in our key-value store so we can fetch it later and make requests.
-		$redis->set($key, json_encode($data['user'], true));
-		$redis->set("stores/{$storeHash}/auth", json_encode($data));
+		//$redis->set($key, json_encode($data['user'], true));
+		//$redis->set("stores/{$storeHash}/auth", json_encode($data));
 
 		return 'Hello ' . json_encode($data);
 	} else {
