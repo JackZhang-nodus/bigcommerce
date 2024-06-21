@@ -33,7 +33,7 @@ $app->get('/load', function (Request $request) use ($app) {
 });
 
 $app->get('/auth/callback', function (Request $request) use ($app) {
-	$redis = new Credis_Client('localhost');
+	//$redis = new Credis_Client('localhost');
 
 	$payload = array(
 		'client_id' => clientId(),
