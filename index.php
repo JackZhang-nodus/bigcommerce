@@ -181,7 +181,7 @@ function configureBCApi($storeHash)
  * @return string the oauth Access (aka Auth) Token to use in API requests.
  */
 function getAuthToken($storeHash)
-{
+{return BC_ACCESS_TOKEN();
 	$redis = new Credis_Client('localhost');
 	$authData = json_decode($redis->get("stores/{$storeHash}/auth"));
 	return $authData->access_token;
@@ -254,6 +254,15 @@ function bcAuthService()
 {
 	$bcAuthService = getenv('BC_AUTH_SERVICE');
 	return $bcAuthService ?: '';
+}
+
+/**
+ * @return string Get auth service URL from the environment vars
+ */
+function BC_ACCESS_TOKEN()
+{
+	$BC_ACCESS_TOKEN = getenv('BC_ACCESS_TOKEN');
+	return $BC_ACCESS_TOKEN ?: '';
 }
 
 function getUserKey($storeHash, $email)
