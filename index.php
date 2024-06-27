@@ -23,7 +23,7 @@ echo 'load';
 		return 'Invalid signed_payload.';
 	}
 	//return 'Welcome ' . json_encode($data);
-	$redis = new Credis_Client('fluent-molly-34427.upstash.io');
+	$redis = new Credis_Client('fluent-molly-34427.upstash.io', 6379, null, '', 0, getenv('REDIS_PWD'));
 	$redis->auth(getenv('REDIS_PWD'));
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
 	$user = json_decode($redis->get($key), true);
