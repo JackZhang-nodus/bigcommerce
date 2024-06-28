@@ -34,7 +34,7 @@ echo 'load';
 	}
 	if (empty($user)) {
 		$user = $data['user'];
-		$redis->set($key, json_encode($user, true));
+		$req = $client->get('/set/'. $key . /' . json_encode($user, true) . '?_token=AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc');
 	}
 	return 'Welcome ' . json_encode($user, true);
 });
