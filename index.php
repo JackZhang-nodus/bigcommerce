@@ -24,6 +24,7 @@ echo 'load';
 	}
 	//return 'Welcome ' . json_encode($data);
 	$client = new Client("https://fluent-molly-34427.upstash.io");
+	$client->setSslVerification(false);
 	$req = $client->get('/get/userSession?_token=AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc');
 	$resp = $req->send();
 
