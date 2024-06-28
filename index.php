@@ -30,7 +30,7 @@ echo 'load';
 
 	if ($resp->getStatusCode() == 200) {
 		$data = $resp->json();
-		return 'Redis ' . json_encode($data);
+		print_r($data);
 	}
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
 	$user = json_decode($redis->get($key), true);
