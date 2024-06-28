@@ -29,9 +29,9 @@ echo 'load';
 	$req = $client->post('',  array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode(array('GET', $key)));
 	$resp = $req->send();
 	if ($resp->getStatusCode() == 200) {
-		$user = $resp->json();echo 'test';print_r($user);
+		$user = $resp->json();
 	}
-	if (empty($user)) {
+	if (empty($user['result'])) {
 		$user = $data['user'];print_r($user);
 		$req = $client->post("/set/".$key, array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode($user));
 		$req->send();
