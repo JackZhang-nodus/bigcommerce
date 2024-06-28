@@ -27,11 +27,14 @@ echo 'load';
 	$client->setSslVerification(false);
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
 	$req = $client->post('', array(
-    'headers' => array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc'),
+    'headers' => array(
+	    'Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc',
+	    'Content-Type' => 'application/json'		      
+		      ),
     'body'    => array('GET', $key),
     'timeout' => 30
 ));
-	$resp = $req->send();
+	$resp = $req->send();return;
 	if ($resp->getStatusCode() == 200) {
 		$user = $resp->json();
 		print_r($user['result']);
