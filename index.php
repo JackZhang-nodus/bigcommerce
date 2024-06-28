@@ -34,12 +34,7 @@ echo 'load';
 	}
 	if (empty($user)) {
 		$user = $data['user'];
-			$req = $client->post("/set/".$key, array(
-    'headers' => array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc'),
-    'body'    => json_encode($user, true),
-    'timeout' => 30
-));
-		$req = $client->post('/set/' . $key . '/' . json_encode($user, true) . '?_token=AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc');
+		$req = $client->post("/set/".$key, array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc'), json_encode($user, true));
 		$req->send();
 	}
 	return 'Welcome ' . json_encode($user, true);
