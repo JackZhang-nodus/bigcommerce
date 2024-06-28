@@ -27,7 +27,7 @@ echo 'load';
 	$client->setSslVerification(false);
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
 	$req = $client->post('',  array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), array('GET', $key));
-	print_r($client);
+	print_r($req);
 	$resp = $req->send();return;
 	if ($resp->getStatusCode() == 200) {
 		$user = $resp->json();
