@@ -23,7 +23,14 @@ echo 'load';
 		return 'Invalid signed_payload.';
 	}
 	//return 'Welcome ' . json_encode($data);
-	$redis = new Credis_Client('fluent-molly-34427.upstash.io', 6379, null, '', 0, getenv('REDIS_PWD'));
+	$client = new Client("https://fluent-molly-34427.upstash.io");
+	$req = $client->get('/get/userSession?_token=AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc');
+	$resp = $req->send();
+
+	if ($resp->getStatusCode() == 200) {
+		$data = $resp->json();
+		return 'Redis ' . json_encode($data);
+	}
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
 	$user = json_decode($redis->get($key), true);
 	if (empty($user)) {
