@@ -26,7 +26,7 @@ echo 'load';
 	$client = new Client("https://fluent-molly-34427.upstash.io");
 	$client->setSslVerification(false);
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
-	$req = $client->get('/get/'. $key . '?_token=AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc');
+	$req = $client->get('/get/' . $key . '?_token=AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc');
 	$resp = $req->send();
 	if ($resp->getStatusCode() == 200) {
 		$user = $resp->json();
@@ -34,7 +34,7 @@ echo 'load';
 	}
 	if (empty($user)) {
 		$user = $data['user'];
-		$req = $client->get('/set/'. $key . /' . json_encode($user, true) . '?_token=AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc');
+		$req = $client->get('/set/' . $key . '/' . json_encode($user, true) . '?_token=AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc');
 	}
 	return 'Welcome ' . json_encode($user, true);
 });
