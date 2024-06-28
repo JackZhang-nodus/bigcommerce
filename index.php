@@ -29,7 +29,7 @@ echo 'load';
 	$req = $client->post('',  array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode(array('GET', $key)));
 	$resp = $req->send();
 	if ($resp->getStatusCode() == 200) {
-		$user = $resp->json();
+		$user = $resp->json();echo 'test';print_r($user);
 	}
 	if (empty($user)) {
 		$user = $data['user'];print_r($user);
