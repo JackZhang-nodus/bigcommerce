@@ -30,7 +30,7 @@ echo 'load';
 
 	if ($resp->getStatusCode() == 200) {
 		$data = $resp->json();
-		print_r(json_decode($data->result, true));
+		print_r($data['result']);
 	}
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
 	$user = json_decode($redis->get($key), true);
