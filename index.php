@@ -33,8 +33,8 @@ echo 'load';
 		print_r($user['result']);
 	}
 	if (empty($user)) {
-		$user = $data['user'];
-		$req = $client->post("/set/".$key, array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc'), json_encode($user, true));
+		$user = $data['user'];print_r($user);
+		$req = $client->post("/set/".$key, array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc'), json_encode($user));
 		$req->send();
 	}
 	return 'Welcome ' . json_encode($user, true);
