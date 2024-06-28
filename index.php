@@ -23,6 +23,7 @@ echo 'load';
 		return 'Invalid signed_payload.';
 	}
 	//return 'Welcome ' . json_encode($data);
+	print_r($data);
 	$client = new Client("https://fluent-molly-34427.upstash.io");
 	$client->setSslVerification(false);
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
@@ -32,7 +33,7 @@ echo 'load';
 		$user = $resp->json();
 	}
 	if (empty($user['result'])) {
-		$user = $data['user'];print_r($user);
+		$user = $data['user'];
 		$req = $client->post("/set/".$key, array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode($user));
 		$req->send();
 	}
