@@ -26,7 +26,7 @@ echo 'load';
 	$client = new Client("https://fluent-molly-34427.upstash.io");
 	$client->setSslVerification(false);
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
-	$req = $client->post('',  array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), array('GET', $key));
+	$req = $client->post('',  array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), array('GET1', $key));
 	print_r($req);
 	$resp = $req->send();return;
 	if ($resp->getStatusCode() == 200) {
