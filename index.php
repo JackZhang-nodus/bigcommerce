@@ -17,13 +17,11 @@ $app = new Application();
 $app['debug'] = true;
 
 $app->get('/load', function (Request $request) use ($app) {
-echo 'load';
 	$data = verifySignedRequest($request->get('signed_payload'));
 	if (empty($data)) {
 		return 'Invalid signed_payload.';
 	}
 	//return 'Welcome ' . json_encode($data);
-	print_r($data);
 	$client = new Client("https://fluent-molly-34427.upstash.io");
 	$client->setSslVerification(false);
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
@@ -41,9 +39,6 @@ echo 'load';
 });
 
 $app->get('/auth/callback', function (Request $request) use ($app) {
-echo 'auth';
-	//$redis = new Credis_Client('localhost');
-
 	$payload = array(
 		'client_id' => clientId(),
 		'client_secret' => clientSecret(),
@@ -66,6 +61,12 @@ echo 'auth';
 		$key = getUserKey($storeHash, $data['user']['email']);
 
 		// Store the user data and auth data in our key-value store so we can fetch it later and make requests.
+		$client = new Client("https://fluent-molly-34427.upstash.io");
+		$client->setSslVerification(false);
+		$req = $client->post("/set/".$key, array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode($data['user']));
+		$req->send();
+		$req = $client->post("/set/".$storeHash, array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode($data));
+		$req->send();
 		//$redis->set($key, json_encode($data['user'], true));
 		//$redis->set("stores/{$storeHash}/auth", json_encode($data));
 
