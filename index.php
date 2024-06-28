@@ -25,15 +25,13 @@ echo 'load';
 	//return 'Welcome ' . json_encode($data);
 	$client = new Client("https://fluent-molly-34427.upstash.io");
 	$client->setSslVerification(false);
-	$req = $client->get('/get/userSession?_token=AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc');
-	$resp = $req->send();
-
-	if ($resp->getStatusCode() == 200) {
-		$data = $resp->json();
-		print_r($data['result']);
-	}
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
-	$user = json_decode($redis->get($key), true);
+	$req = $client->get('/get/'. $key . '?_token=AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc');
+	$resp = $req->send();
+	if ($resp->getStatusCode() == 200) {
+		$user = $resp->json();
+		print_r($user['result']);
+	}
 	if (empty($user)) {
 		$user = $data['user'];
 		$redis->set($key, json_encode($user, true));
