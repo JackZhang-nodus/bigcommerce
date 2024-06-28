@@ -26,15 +26,14 @@ echo 'load';
 	$client = new Client("https://fluent-molly-34427.upstash.io");
 	$client->setSslVerification(false);
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
-	$req = $client->post('',  array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode(array('GET', 'userSession')));
+	$req = $client->post('',  array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode(array('GET', $key)));
 	$resp = $req->send();
 	if ($resp->getStatusCode() == 200) {
 		$user = $resp->json();
-		print_r($user['result']);
 	}
 	if (empty($user)) {
 		$user = $data['user'];print_r($user);
-		$req = $client->post("/set/".$key, array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc'), json_encode($user));
+		$req = $client->post("/set/".$key, array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode($user));
 		$req->send();
 	}
 	return 'Welcome ' . json_encode($user, true);
