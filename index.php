@@ -22,17 +22,11 @@ $app->get('/load', function (Request $request) use ($app) {
 		return 'Invalid signed_payload.';
 	}
 	//return 'Welcome ' . json_encode($data);
-	$client = new Client("https://fluent-molly-34427.upstash.io");
-	$client->setSslVerification(false);
 	$key = getUserKey($data['store_hash'], $data['user']['email']);
-	$req = $client->post('',  array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode(array('GET', $key)));
-	$resp = $req->send();
-	if ($resp->getStatusCode() == 200) {
-		$user = $resp->json();
-	}
-	if (empty($user['result'])) {
+	$user = getRedis($key);
+	if (empty($user)) {
 		$user = $data['user'];
-		$req = $client->post("/set/".$key, array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode($user));
+		$req = setRedis($key, $user);
 		$req->send();
 	}
 	return 'Welcome ' . json_encode($user, true);
@@ -190,9 +184,9 @@ function configureBCApi($storeHash)
  * @return string the oauth Access (aka Auth) Token to use in API requests.
  */
 function getAuthToken($storeHash)
-{return BC_ACCESS_TOKEN();
+{
 	$redis = new Credis_Client('localhost');
-	$authData = json_decode($redis->get("stores/{$storeHash}/auth"));
+	$authData = json_decode($redis->get($storeHash), true);
 	return $authData->access_token;
 }
 
@@ -277,6 +271,38 @@ function BC_ACCESS_TOKEN()
 function getUserKey($storeHash, $email)
 {
 	return "kitty.php:$storeHash:$email";
+}
+
+function getRedis($key)
+{
+	$REDIS_URL = getenv('REDIS_URL') ?: '';
+	$REDIS_PWD = getenv('REDIS_PWD') ?: '';
+	$client = new Client($REDIS_URL);
+	$client->setSslVerification(false);
+	$req = $client->post('',  array('Authorization' => 'Bearer ' . $REDIS_PWD, 'Content-Type' => 'application/json'), json_encode(array('GET', $key)));
+	$resp = $req->send();
+	if ($resp->getStatusCode() == 200) {
+		$json = $resp->json();
+		return $json['result'] ?: '';
+	} else {
+		return 'Something went wrong... [' . $resp->getStatusCode() . '] ' . $resp->getBody();
+	}
+}
+
+function setRedis($key, $value)
+{
+	$REDIS_URL = getenv('REDIS_URL') ?: '';
+	$REDIS_PWD = getenv('REDIS_PWD') ?: '';
+	$client = new Client($REDIS_URL);
+	$client->setSslVerification(false);
+	$req = $client->post("/set/".$key, array('Authorization' => 'Bearer ' . $REDIS_PWD, 'Content-Type' => 'application/json'), json_encode($value));
+	$resp = $req->send();
+	if ($resp->getStatusCode() == 200) {
+		$json = $resp->json();
+		return $json['result'] ?: '';
+	} else {
+		return 'Something went wrong... [' . $resp->getStatusCode() . '] ' . $resp->getBody();
+	}
 }
 
 $app->run();
