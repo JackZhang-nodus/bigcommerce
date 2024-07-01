@@ -180,8 +180,8 @@ function configureBCApi($storeHash)
  */
 function getAuthToken($storeHash)
 {
-	$authData = getRedis($storeHash);print_r($authData);
-	return $authData->access_token;
+	$authData = json_decode(getRedis($storeHash), true);
+	return $authData['access_token'];
 }
 
 /**
