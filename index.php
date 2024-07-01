@@ -29,6 +29,7 @@ $app->get('/load', function (Request $request) use ($app) {
 		$req = setRedis($key, $user);
 		$req->send();
 	}
+	print_r(getAuthToken($data['store_hash']));
 	return 'Welcome ' . json_encode($user, true);
 });
 
@@ -56,14 +57,8 @@ $app->get('/auth/callback', function (Request $request) use ($app) {
 		$key = getUserKey($storeHash, $data['user']['email']);
 
 		// Store the user data and auth data in our key-value store so we can fetch it later and make requests.
-		$client = new Client("https://fluent-molly-34427.upstash.io");
-		$client->setSslVerification(false);
-		$req = $client->post("/set/".$key, array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode($data['user']));
-		$req->send();
-		$req = $client->post("/set/".$storeHash, array('Authorization' => 'Bearer AYZ7AAIncDExZDVhNGY4OWNmYTU0ZWRjOWQ0OTgzOGRlYzI0YjVjZHAxMzQ0Mjc', 'Content-Type' => 'application/json'), json_encode($data));
-		$req->send();
-		//$redis->set($key, json_encode($data['user'], true));
-		//$redis->set("stores/{$storeHash}/auth", json_encode($data));
+		setRedis($key, $data['user']);
+		setRedis($storeHash, $data);
 
 		return 'Hello ' . json_encode($data);
 	} else {
@@ -185,8 +180,7 @@ function configureBCApi($storeHash)
  */
 function getAuthToken($storeHash)
 {
-	$redis = new Credis_Client('localhost');
-	$authData = json_decode($redis->get($storeHash), true);
+	$authData = getRedis($storeHash);
 	return $authData->access_token;
 }
 
@@ -257,15 +251,6 @@ function bcAuthService()
 {
 	$bcAuthService = getenv('BC_AUTH_SERVICE');
 	return $bcAuthService ?: '';
-}
-
-/**
- * @return string Get auth service URL from the environment vars
- */
-function BC_ACCESS_TOKEN()
-{
-	$BC_ACCESS_TOKEN = getenv('BC_ACCESS_TOKEN');
-	return $BC_ACCESS_TOKEN ?: '';
 }
 
 function getUserKey($storeHash, $email)
