@@ -50,6 +50,7 @@ $app->get('/auth/callback', function (Request $request) use ($app) {
 	);
 
 	$client = new Client(bcAuthService());
+	$client->setSslVerification(false);
 	$req = $client->post('/oauth2/token', array(), $payload, array(
 		'exceptions' => false,
 	));
