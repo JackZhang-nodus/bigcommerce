@@ -43,7 +43,7 @@ $app->get('/auth/callback', function (Request $request) use ($app) {
 		'scope' => $request->get('scope'),
 		'context' => $request->get('context'),
 	);
-
+print_r($payload);exit;
 	$client = new Client(bcAuthService());
 	$client->setSslVerification(false);
 	$req = $client->post('/oauth2/token', array(), $payload, array(
